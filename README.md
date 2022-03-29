@@ -3,6 +3,7 @@
 
 Training_Testing
    Images are converted into np.array, normalized and flatten. Final shape, with labels is (1, 12288)
+   Each image is 64x64 so that's 4096 pixels in total, considering the RGB factor (3) -> 4096 * 3 makes 12288 hence the label is (1,12288)
 
 PCA_Attendance 
    Training & Testing Images converted into PCA
@@ -12,3 +13,4 @@ CNN (Rename NN)
 
 Mobile 
    Mobile User Interface
+
