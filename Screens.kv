@@ -1,0 +1,149 @@
+Window:
+    Login:
+    Home:
+    Attendance:
+
+<Login>:
+    name:"Login"
+    MDCard:
+        size_hint: None, None
+        size: 300, 500
+        pos_hint : {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+        Image:
+            id: imageView
+            source: "/Users/sabawunafzalkhattak/Desktop/Attendance_System/logo.jpg"
+            allow_stretch: True
+        MDLabel:
+            id: LogIn_Label
+            text: "ODTU ATTENDANCE SYSTEM"
+            font_size: 16
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y:15
+        Widget:
+            size_hint_y: None
+            height:5
+        MDTextFieldRound:
+            id: user
+            hint_text: "Username"
+            icon_right: "account"
+            size_hint_x: None
+            width: 200
+            font_size: 14
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: password
+            hint_text: "Password"
+            icon_right: "eye-off"
+            size_hint_x: None
+            width: 200
+            font_size: 14
+            pos_hint: {"center_x": 0.5}
+            password: True
+        MDRoundFlatButton:
+            text: "Log In"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press: app.root.current = "Home"
+        Widget:
+            size_hint_y: None
+            height:20
+
+
+<Home>:
+    name:"Home"
+    MDCard:
+        size_hint: None, None
+        size: 300, 500
+        pos_hint : {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+        Image:
+            id: imageView
+            source: "/Users/sabawunafzalkhattak/Desktop/Attendance_System/logo.jpg"
+            allow_stretch: True
+        MDLabel:
+            id: Home_Label
+            text: "Home"
+            font_size: 16
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y:15
+        Widget:
+            size_hint_y: None
+            height:5
+        MDTextFieldRound:
+            id: user
+            hint_text: "Username"
+            icon_right: "account"
+            size_hint_x: None
+            width: 200
+            font_size: 14
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: password
+            hint_text: "Password"
+            icon_right: "eye-off"
+            size_hint_x: None
+            width: 200
+            font_size: 14
+            pos_hint: {"center_x": 0.5}
+            password: True
+        MDRoundFlatButton:
+            text: "Log In"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press: app.root.current = "Attendance"
+        MDRoundFlatButton:
+            text: "Exit"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press: app.quit()
+        Widget:
+            size_hint_y: None
+            height:20
+
+<Attendance>:
+    name:"Attendance"
+    MDCard:
+        size_hint: None, None
+        size: 300, 500
+        pos_hint : {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+        MDLabel:
+            id: Attendance_Label
+            text: "Attendance"
+            font_size: 16
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y:15
+        Widget:
+            size_hint_y: None
+            height:5
+        MDRoundFlatButton:
+            text: "Take Attendance"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press:
+                app.take_attendance()
+                app.root.current = "Home"
+        MDRoundFlatButton:
+            text: "Back"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press: app.root.current = "Home"
+        Widget:
+            size_hint_y: None
+            height:20
