@@ -7,7 +7,7 @@ def check_username_password():
         connection = mysql.connector.connect(host='localhost',
                                              database='Attendance',
                                              user='root',
-                                             password='Pakistan1.')
+                                             password='Onur_281195')
         if connection.is_connected():
             db_Info = connection.get_server_info()
             cursor = connection.cursor()
@@ -16,14 +16,18 @@ def check_username_password():
             cursor.execute('SELECT * FROM logIn WHERE id = %s AND password = %s', (id, password,))
             logIn = cursor.fetchone()
             if logIn:
-                print("Found")
-                cursor.close()
-                connection.close()
+                Var = 'name'
+                Key = 'id'
+                sql = "Select name FROM logIn WHERE id = "+ Key
+                cursor.execute(sql,{'key':Key})
+                name = cursor.fetchone()
+                return str(name[0])
+
             else:
                 print("Wrong id or password. Try again")
                 cursor.close()
                 connection.close()
-                return 0
+                exit(0)
 
     except Error as e:
         print("Error while connecting to MySQL", e)
