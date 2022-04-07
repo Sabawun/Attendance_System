@@ -4,18 +4,19 @@ import os
 import cv2
 from tqdm import tqdm
 
-DATADIR = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/Training_Set"
-DATADIR2 = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/Testing_Set"
-# DATADIR0 = "E:\Attendance_System"
+User = "Sabawun"
 
-# CATEGORIES = ["Abdullah", "Alpsen", "Areesh", "Khizr", "Mohsin", "Nazal" ,"Omar", "Onur", "Osama", "Ramis", "Sabawun"]
-CATEGORIES = ["Abdullah", "Alpsen", "Sabawun", "Onur"]
+Test = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/" + User + "/Test"
+Train = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/" + User + "/Train"
+
+
+CATEGORIES = [User, "Other"]
 
 
 #######################################################################################################################
 def create_training_data():
     for category in CATEGORIES:
-        path = os.path.join(DATADIR, category)  # create path
+        path = os.path.join(Train, category)  # create path
         class_num = CATEGORIES.index(category)  # get the classification
 
         for img in tqdm(os.listdir(path)):  # iterate over each image
@@ -28,6 +29,7 @@ def create_training_data():
 
 
 training_data = []
+
 create_training_data()
 
 random.shuffle(training_data)
@@ -52,7 +54,7 @@ Flatten_Norm_Training_Images = Norm_Training_Images.reshape(-1, 12288)
 def create_testing_data():
     for category in CATEGORIES:  #
 
-        path = os.path.join(DATADIR2, category)  # create path
+        path = os.path.join(Test, category)  # create path
         class_num = CATEGORIES.index(category)  # get the classification
 
         for img in tqdm(os.listdir(path)):  # iterate over each image per faces
@@ -85,11 +87,11 @@ Testing_Labels = np.array(Testing_Labels)
 Flatten_Norm_Testing_Images = Norm_Testing_Images.reshape(-1, 12288)
 
 ########################################################################################################################
-Flatten_Norm_Testing_Images = np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/DataFiles"
-                                      "/Flatten_Norm_Testing_Images.npy", Flatten_Norm_Testing_Images)
-Flatten_Norm_Training_Images = np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/DataFiles"
-                                       "/Flatten_Norm_Training_Images.npy", Flatten_Norm_Training_Images)
-Training_Labels = np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/DataFiles/Training_Labels.npy",
-                          Training_Labels)
-Testing_Labels = np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/DataFiles/Testing_Labels.npy",
-                         Testing_Labels)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User +
+        "/" + User + "_Test_File.npy", Flatten_Norm_Testing_Images)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User +
+        "/" + User + "_Train_File.npy", Flatten_Norm_Training_Images)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Train_Labels"
+        ".npy", Training_Labels)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Test_Labels.npy",
+        Testing_Labels)

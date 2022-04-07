@@ -5,17 +5,24 @@ from tkinter import ttk
 from tkinter import messagebox
 import csv
 import datetime
-
 from tensorflow import keras
 
-from PCA_Attendance import pca
+User = input("Enter your name: ")
 
-# from Training_Testing import CATEGORIES
+if User == "Abdullah ":
+    from CNN.Abdullah_PCA_Attendance import pca
+elif User == "Sabawun":
+    from CNN.Sabawun_PCA_Attendance import pca
+elif User == "Alpsen":
+    from CNN.Alpsen_PCA_Attendance import pca
+elif User == "Onur":
+    from CNN.Onur_PCA_Attendance import pca
+else:
+    print("User not specified")
 
-CATEGORIES = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/DataFiles/Categories.npy")
+CATEGORIES = [User, "Other"]
 # from CNN import model
-
-model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/Face_Recognizer")
+model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/CNN_Models/" + User)
 
 count = 0
 dic = dict()
