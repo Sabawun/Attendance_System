@@ -9,7 +9,7 @@ from tensorflow import keras
 
 User = input("Enter your name: ")
 
-if User == "Abdullah ":
+if User == "Abdullah":
     from CNN.Abdullah_PCA_Attendance import pca
 elif User == "Sabawun":
     from CNN.Sabawun_PCA_Attendance import pca
