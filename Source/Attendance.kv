@@ -1,0 +1,54 @@
+Screen:
+
+    MDCard:
+        size_hint: None, None
+        size: 350, 500
+        pos_hint: {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        id:Login
+        orientation: 'vertical'
+        spacing: 25
+        canvas.before:
+            Rectangle:
+                source: '/Users/sabawunafzalkhattak/Desktop/Attendance_System/background.jpeg'
+                size: 350 ,480
+                pos: self.pos
+        Image:
+            id: Logo
+            source:'/Users/sabawunafzalkhattak/Desktop/Attendance_System/logo.png'
+            allow_stretch: True
+            keep_ratio: True
+            size_hint: .2, 0.2
+            pos_hint: {"center_x":0.5,"center_y":0.1}
+        Widget:
+            size_hint_y: None
+            height: 5
+        MDTextFieldRound:
+            id: student_id
+            hint_text: "Student Id"
+            icon_right: "account"
+            size_hint_x:  None
+            font_size: 16
+            width : 200
+            height: "30dp"
+            pos_hint: {"center_x": 0.5 }
+        MDTextFieldRound:
+            id: password
+            hint_text: "password"
+            icon_right: "eye-off"
+            size_hint_x:  None
+            font_size: 18
+            height: "30dp"
+            width : 200
+            pos_hint: {"center_x": 0.5 }
+            password : True
+        MDFillRoundFlatButton:
+            text: "Login"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_press:
+        Widget:
+            size_hint_y: None
+            height: 5
+
