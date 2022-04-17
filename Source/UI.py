@@ -1,13 +1,16 @@
-import cv2
-import numpy as np
-from tkinter import *
-from tkinter import ttk
-from tkinter import messagebox
 import csv
 import datetime
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+
+import cv2
+import numpy as np
 from tensorflow import keras
 
-User = input("Enter your name: ")
+from Source.DatabaseConnection import check_username_password
+
+User = check_username_password()
 
 if User == "Abdullah":
     from CNN.Abdullah_PCA_Attendance import pca

@@ -7,19 +7,18 @@ def check_username_password():
         connection = mysql.connector.connect(host='localhost',
                                              database='Attendance',
                                              user='root',
-                                             password='Onur_281195')
+                                             password='Pakistan1.')
         if connection.is_connected():
-            db_Info = connection.get_server_info()
+            #    db_Info = connection.get_server_info()
             cursor = connection.cursor()
-            id = input("Please enter user_id: ")
-            password = input("Please enter password: ")
+            id = input("Please enter user_id:")
+            password = input("Please enter password:")
             cursor.execute('SELECT * FROM logIn WHERE id = %s AND password = %s', (id, password,))
             logIn = cursor.fetchone()
             if logIn:
-                Var = 'name'
                 Key = 'id'
-                sql = "Select name FROM logIn WHERE id = "+ Key
-                cursor.execute(sql,{'key':Key})
+                sql = "Select name FROM logIn WHERE id = " + Key
+                cursor.execute(sql, {'key': Key})
                 name = cursor.fetchone()
                 return str(name[0])
 
