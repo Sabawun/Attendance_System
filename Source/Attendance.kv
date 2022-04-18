@@ -1,8 +1,14 @@
-Screen:
+Manager:
+    Login:
+    Home:
+    Course:
+    Recognition
 
+<Login>:
+    name:"Login"
     MDCard:
         size_hint: None, None
-        size: 350, 500
+        size: 360, 600
         pos_hint: {"center_x":0.5,"center_y":0.5}
         elevation: 10
         padding: 25
@@ -12,7 +18,7 @@ Screen:
         canvas.before:
             Rectangle:
                 source: '/Users/sabawunafzalkhattak/Desktop/Attendance_System/background.jpeg'
-                size: 350 ,480
+                size: 360 ,580
                 pos: self.pos
         Image:
             id: Logo
@@ -33,6 +39,8 @@ Screen:
             width : 200
             height: "30dp"
             pos_hint: {"center_x": 0.5 }
+            color_mode: 'custom'
+            line_color_focus: 1, 1, 1, 1
         MDTextFieldRound:
             id: password
             hint_text: "password"
@@ -43,12 +51,219 @@ Screen:
             width : 200
             pos_hint: {"center_x": 0.5 }
             password : True
+        Widget:
+            size_hint_y: None
+            height: 10
         MDFillRoundFlatButton:
             text: "Login"
             font_size: 12
             pos_hint: {"center_x":0.5}
-            on_press:
+            on_release:
+                app.root.current = "Home"
+                root.manager.transition.direction = "up"
         Widget:
             size_hint_y: None
-            height: 5
+            height: 15
 
+
+<Home>:
+    name:"Home"
+    MDCard:
+        size_hint: None, None
+        size: 360, 600
+        pos_hint: {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        id:Login
+        orientation: 'vertical'
+        MDBoxLayout:
+            orientation: 'vertical'
+            MDBoxLayout:
+                orientation: 'vertical'
+                MDLabel:
+                    padding: '50'
+                    canvas.before:
+                        Color:
+                            rgba: (1,0,0,1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    text: ' Attendance Portal '
+                    font_size: 34
+                    color : 'white'
+                    width : 220
+                    height: "40dp"
+                    pos_hint: {"center_x": 0.5 }
+            MDBoxLayout:
+                orientation: 'horizontal'
+                MDLabel:
+                    text: ' Name: '
+                    font_size: 16
+                    width : 200
+                    height: "30dp"
+                    pos_hint: {"center_x": 0.5 }
+                MDLabel:
+                    text: 'Student Id: '
+                    font_size: 16
+                    width : 200
+                    height: "30dp"
+                    pos_hint: {"center_x": 0.5 }
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+            MDBoxLayout:
+                orientation: 'horizontal'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    Widget:
+                        size_hint_y: None
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDFillRoundFlatButton:
+                        text: "Take Attendance"
+                        font_size: 20
+                        pos_hint: {"center_x":0.5}
+                        on_release:
+                            app.root.current = "Course"
+                            root.manager.transition.direction = "up"
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    Widget:
+                        size_hint_y: None
+                        height: 5
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+                    height: 5
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+            MDBoxLayout:
+                orientation: 'horizontal'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    Widget:
+                        size_hint_y: None
+                        height: 5
+                    Widget:
+                        size_hint_y: None
+                        height: 5
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDFillRoundFlatButton:
+                        text: "View Attendance"
+                        font_size: 20
+                        pos_hint: {"center_x":0.5}
+                        on_release:
+                            app.root.current = "Home"
+                            root.manager.transition.direction = "left"
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    Widget:
+                        size_hint_y: None
+                        height: 5
+                    Widget:
+                        size_hint_y: None
+                        height: 5
+            MDBoxLayout:
+                orientation: 'horizontal'
+                Widget:
+                    size_hint_y: None
+                    height: 5
+                Widget:
+                    size_hint_y: None
+                    height: 5
+        MDBoxLayout:
+            orientation:'vertical'
+            Widget:
+                size_hint_y: None
+                height: 5
+            MDFillRoundFlatButton:
+                text: "Exit"
+                font_size: 12
+                halign: 'center'
+                pos_hint: {"center_x":0.8}
+                on_release:
+                    app.root.current = "Login"
+                    root.manager.transition.direction = "right"
+            Widget:
+                size_hint_y: None
+                height: 20
+
+
+<Course>:
+    name: "Course"
+    MDCard:
+        size_hint: None, None
+        size: 360, 600
+        pos_hint: {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        id:Login
+        orientation: 'vertical'
+        spacing: 25
+        canvas.before:
+            Rectangle:
+                source: '/Users/sabawunafzalkhattak/Desktop/Attendance_System/image.jpeg'
+                size: 360 ,600
+                pos: self.pos
+        MDTextFieldRound:
+            id: course_code
+            hint_text: "Course Code"
+            size_hint_x:  None
+            font_size: 16
+            width : 200
+            height: "30dp"
+            pos_hint: {"center_x": 0.5 }
+        MDTextFieldRound:
+            id: section
+            hint_text: "Section"
+            size_hint_x:  None
+            font_size: 18
+            height: "30dp"
+            width : 200
+            pos_hint: {"center_x": 0.5 }
+        Widget:
+            size_hint_y: None
+            height: 10
+        MDFillRoundFlatButton:
+            text: "Continue"
+            font_size: 12
+            pos_hint: {"center_x":0.5}
+            on_release:
+                app.root.current = "Recognition"
+                root.manager.transition.direction = "up"
+        Widget:
+            size_hint_y: None
+            height: 15
+
+<Recognition>:
+    name : "Recognition"
+    MDCard:
+        size_hint: None, None
+        size: 360, 600
+        pos_hint: {"center_x":0.5,"center_y":0.5}
+        elevation: 10
+        padding: 25
+        id:Login
+        orientation: 'vertical'
+        spacing: 25
+        Camera:
+            id: camera
+            resolution: (640,480)
+            play: True
+        Button:
+            text: 'Capture'
+            size_hint_y: None
+            height: '48dp'
+            on_press: root.capture()

@@ -82,7 +82,7 @@ def recognizer():
         if len(faces) > 0:
             # draws rectangles on a frame,.
             for i, face in enumerate(faces):
-                predict_x = model.predict(np.array(Image_test[i]))  # or this
+                predict_x = model.predict(np.array(Image_test[i]))
                 classes_x = CATEGORIES[int(np.argmax(predict_x, axis=1))]
                 x, y, w, h = face
                 # print("i = " + str(i))
