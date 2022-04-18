@@ -6,65 +6,64 @@ Manager:
 
 <Login>:
     name:"Login"
-    MDCard:
-        size_hint: None, None
-        size: 360, 600
-        pos_hint: {"center_x":0.5,"center_y":0.5}
-        elevation: 10
-        padding: 25
-        id:Login
-        orientation: 'vertical'
-        spacing: 25
-        canvas.before:
-            Rectangle:
-                source: '/Users/sabawunafzalkhattak/Desktop/Attendance_System/background.jpeg'
-                size: 360 ,580
-                pos: self.pos
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: app.theme_cls.bg_normal
+        MDToolbar:
+            id: logoToolBar
+            height: 50
+            title: "Attendance System"
+            margin: 0
         Image:
-            id: Logo
-            source:'/Users/sabawunafzalkhattak/Desktop/Attendance_System/logo.png'
+            id : Background
+            source: '/Users/sabawunafzalkhattak/Desktop/Attendance_System/background.jpeg'
+            size_hint :(.5,1)
+            pos_hint : {"center_x": 0.5, "center_y":0.5}
             allow_stretch: True
             keep_ratio: True
-            size_hint: .2, 0.2
-            pos_hint: {"center_x":0.5,"center_y":0.1}
-        Widget:
-            size_hint_y: None
-            height: 5
-        MDTextFieldRound:
-            id: student_id
-            hint_text: "Student Id"
-            icon_right: "account"
-            size_hint_x:  None
-            font_size: 16
-            width : 200
-            height: "30dp"
-            pos_hint: {"center_x": 0.5 }
-            color_mode: 'custom'
-            line_color_focus: 1, 1, 1, 1
-        MDTextFieldRound:
-            id: password
-            hint_text: "password"
-            icon_right: "eye-off"
-            size_hint_x:  None
-            font_size: 18
-            height: "30dp"
-            width : 200
-            pos_hint: {"center_x": 0.5 }
-            password : True
-        Widget:
-            size_hint_y: None
-            height: 10
-        MDFillRoundFlatButton:
-            text: "Login"
-            font_size: 12
-            pos_hint: {"center_x":0.5}
-            on_release:
-                app.root.current = "Home"
-                root.manager.transition.direction = "up"
-        Widget:
-            size_hint_y: None
-            height: 15
-
+        MDBoxLayout:
+            orientation: "vertical"
+            Image:
+                id: Logo
+                source:'/Users/sabawunafzalkhattak/Desktop/Attendance_System/logo.png'
+                allow_stretch: True
+                keep_ratio: True
+                size_hint: .2, 0.2
+                pos_hint: {"center_x":0.5,"center_y":0.1}
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: 20
+            MDTextFieldRound:
+                id: studentId
+                hint_text: "Student Id"
+                icon_right: "account"
+                size_hint_x:  None
+                font_size: 18
+                height: "30dp"
+                width : 200
+                pos_hint: {"center_x": 0.5 }
+                password : True
+                elevation: 10
+            MDTextFieldRound:
+                id: password
+                hint_text: "password"
+                icon_right: "eye-off"
+                size_hint_x:  None
+                font_size: 18
+                height: "30dp"
+                width : 200
+                pos_hint: {"center_x": 0.5 }
+                password : True
+                elevation: 10
+            MDFillRoundFlatButton:
+                text: "Login"
+                font_size: 12
+                pos_hint: {"center_x":0.5}
+                elevation: 20
+                on_release:
+                    app.root.current = "Home"
+        MDBoxLayout:
+            orientation: 'vertical'
 
 <Home>:
     name:"Home"
@@ -133,7 +132,6 @@ Manager:
                         pos_hint: {"center_x":0.5}
                         on_release:
                             app.root.current = "Course"
-                            root.manager.transition.direction = "up"
                 MDBoxLayout:
                     orientation: 'vertical'
                     Widget:
@@ -166,7 +164,6 @@ Manager:
                         pos_hint: {"center_x":0.5}
                         on_release:
                             app.root.current = "Home"
-                            root.manager.transition.direction = "left"
                 MDBoxLayout:
                     orientation: 'vertical'
                     Widget:
@@ -242,7 +239,7 @@ Manager:
             pos_hint: {"center_x":0.5}
             on_release:
                 app.root.current = "Recognition"
-                root.manager.transition.direction = "up"
+                root.manager.transition.direction = "down"
         Widget:
             size_hint_y: None
             height: 15
@@ -258,12 +255,12 @@ Manager:
         id:Login
         orientation: 'vertical'
         spacing: 25
-        Camera:
+        KivyCamera:
             id: camera
-            resolution: (640,480)
-            play: True
-        Button:
-            text: 'Capture'
+            resolution: (640, 480)
+            detect: False
+        MDFillRoundFlatButton:
+            text: 'Go'
+            on_press: camera.detect = not camera.detect
             size_hint_y: None
-            height: '48dp'
-            on_press: root.capture()
+            pos_hint: {"center_x":0.5,"center_y":0.5}
