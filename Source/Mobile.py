@@ -1,5 +1,4 @@
 from datetime import time
-
 import cv2
 import kivy
 import numpy as np

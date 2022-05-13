@@ -7,7 +7,7 @@ def check_username_password():
         connection = mysql.connector.connect(host='localhost',
                                              database='Attendance',
                                              user='root',
-                                             password='Pakistan1.')
+                                             password='sabawun98')
         if connection.is_connected():
             #    db_Info = connection.get_server_info()
             cursor = connection.cursor()
