@@ -3,7 +3,6 @@ import datetime
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-
 import cv2
 import numpy as np
 from tensorflow import keras

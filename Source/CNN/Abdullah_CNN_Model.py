@@ -15,26 +15,26 @@ Testing_Labels = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/F
 y_train = np_utils.to_categorical(Training_Labels)
 y_test = np_utils.to_categorical(Testing_Labels)
 
-batch_size = 12  # 186 photos
-num_classes = 2  # change to 4
-epochs = 150
+batch_size = 10
+num_classes = 2
+epochs = 35
 
 model = Sequential()
-model.add(Dense(1024, activation='relu', input_shape=(pca.n_components_,)))
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.8))
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.8))
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.4))
-model.add(Dense(256, activation='relu'))
-model.add(Dense(256, activation='relu'))
+model.add(Dense(512, activation='sigmoid', input_shape=(pca.n_components_,)))
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.4))
-model.add(Dense(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
+# model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.4))
 model.add(Dense(16, activation='relu'))
+# model.add(Dropout(0.4))
+# model.add(Dense(256, activation='relu'))
+# model.add(Dense(256, activation='relu'))
+# model.add(Dense(128, activation='relu'))
+# model.add(Dropout(0.4))
+# model.add(Dense(64, activation='relu'))
+# model.add(Dense(32, activation='relu'))
+# model.add(Dropout(0.4))
+# model.add(Dense(16, activation='relu'))
 model.add(Dense(num_classes, activation='softmax'))
 
 model.summary()

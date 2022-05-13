@@ -16,9 +16,10 @@ from kivy.uix.camera import Camera
 from tensorflow import keras
 from Source.CNN.Sabawun_PCA_Attendance import pca
 
+User = "Sabawun"
+
 CATEGORIES = ["Sabawun", "Other"]
 
-User = "Sabawun"
 
 model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/CNN_Models/" + User)
 
