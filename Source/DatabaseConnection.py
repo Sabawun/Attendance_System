@@ -16,12 +16,7 @@ def check_username_password():
             cursor.execute('SELECT * FROM logIn WHERE id = %s AND password = %s', (id, password,))
             logIn = cursor.fetchone()
             if logIn:
-                Key = 'id'
-                sql = "Select name FROM logIn WHERE id = " + Key
-                cursor.execute(sql, {'key': Key})
-                name = cursor.fetchone()
-                return str(name[0])
-
+                return str(logIn[1])
             else:
                 print("Wrong id or password. Try again")
                 cursor.close()
@@ -30,6 +25,3 @@ def check_username_password():
 
     except Error as e:
         print("Error while connecting to MySQL", e)
-
-
-check_username_password()
