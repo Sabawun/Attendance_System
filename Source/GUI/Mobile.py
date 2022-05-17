@@ -20,19 +20,15 @@ User = "Sabawun"
 
 CATEGORIES = ["Sabawun", "Other"]
 
-
 model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/CNN_Models/" + User)
 
-classifier = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
+classifier = cv2.CascadeClassifier(
+    "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/ImageProcessing/haarcascade_frontalface_alt.xml")
 
 Window.size = (320, 600)
 
 
 class Login(Screen):
-    pass
-
-
-class Home(Screen):
     pass
 
 
@@ -44,6 +40,59 @@ class Recognition(Screen):
     pass
 
 
+def frame_to_texture(frame):
+    # convert it to texture
+    buf1 = cv2.flip(frame, 0)
+    buf = buf1.tobytes()
+    image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+    image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+    return image_texture
+
+
+def detect_faces(frame):
+    faces = classifier.detectMultiScale(frame, 1.5, 5)
+    Image_test = []
+
+    # Draw a rectangle around the faces
+    for face in faces:
+        x, y, w, h = face
+        im_face = frame[y:y + h, x:x + w]  # frame with only detected face
+        new_array = cv2.resize(im_face, (64, 64))
+        Face_image = np.array(new_array)
+        Face_image = Face_image / 255.0
+        Face_image = Face_image.reshape(-1, 64, 64, 3)
+        Face_image_flat = Face_image.reshape(-1, 12288)
+        Face_image_pca = pca.transform(Face_image_flat)
+        Image_test.append(np.array(Face_image_pca))
+
+    if len(faces) > 0:
+        for i, face in enumerate(faces):
+            predict_x = model.predict(np.array(Image_test[i]))
+            classes_x = CATEGORIES[int(np.argmax(predict_x, axis=1))]
+            x, y, w, h = face
+            i = 0
+            for categories in CATEGORIES:
+                if classes_x == categories:
+                    break
+                else:
+                    i = i + 1
+            predict = predict_x[0]
+            if predict[i] > 0.98:
+                cv2.rectangle(frame, (x, y), (x + w, y + h),
+                              (0, 250, 0), 3)
+                cv2.putText(frame, str(classes_x), (x - 50, y - 10),
+                            cv2.FONT_HERSHEY_PLAIN, 2,
+                            (0, 250, 0), 2)
+                cv2.putText(frame, str(predict[i]), (x - 50, y - 50),
+                            cv2.FONT_HERSHEY_PLAIN, 2,
+                            (250, 0, 0), 2)
+            else:
+                cv2.rectangle(frame, (x, y), (x + w, y + h),
+                              (0, 0, 250), 3)
+
+    return frame
+
+
 class KivyCamera(Image):
 
     def __init__(self, fps=30, **kwargs):
@@ -52,35 +101,16 @@ class KivyCamera(Image):
         Clock.schedule_interval(self.update, 1.0 / fps)
         self.actual_fps = []
 
-    def detect_faces(self, frame):
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        faces = classifier.detectMultiScale(gray, 1.5, 5)
-
-        # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-        return frame
-
-    def frame_to_texture(self, frame):
-        # convert it to texture
-        buf1 = cv2.flip(frame, 0)
-        buf = buf1.tobytes()
-        image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-        image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-        return image_texture
-
     def update(self, dt):
         ret, frame = self.capture.read()
         if not ret:
             return
 
         if self.detect:
-            self.detect_faces(frame)
+            detect_faces(frame)
 
         # display image from the texture
-        self.texture = self.frame_to_texture(frame)
+        self.texture = frame_to_texture(frame)
 
 
 class Manager(ScreenManager):
@@ -93,6 +123,11 @@ class Attendance(MDApp):
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Red"
         return Builder.load_file('Attendance.kv')
+
+    def logger(self):
+        print(self.root.current.isidentifier())
+        self.root.current = "Course"
+        return 1
 
 
 Attendance().run()
