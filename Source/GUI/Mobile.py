@@ -16,7 +16,7 @@ from kivy.uix.camera import Camera
 from tensorflow import keras
 from Source.CNN.PCA_Attendance import PCA_Attendance
 from pathlib import Path
-
+from kivy.properties import ObjectProperty
 User = "Sabawun"
 pca, train_img_pca, test_img_pca = PCA_Attendance(User)
 
@@ -32,7 +32,21 @@ Window.size = (320, 600)
 
 
 class Login(Screen):
-    pass
+    studentId = ObjectProperty(None)
+    password = ObjectProperty(None)
+    user = ""
+
+    def logger(self):
+        # User = check_username_password(self.ids.studentId.text, self.ids.password.text)
+        user = "Sabawun"
+        print(self.ids.studentId.text)
+        print(self.ids.password.text)
+
+        if user == "not":
+            self.ids.studentId.text = " "
+            self.ids.password.text = ""
+        else:
+            self.parent.current = "Recognition"
 
 
 class Course(Screen):
@@ -53,6 +67,7 @@ def frame_to_texture(frame):
 
 
 def detect_faces(frame):
+    print(Login.user)
     faces = classifier.detectMultiScale(frame, 1.5, 5)
     Image_test = []
 
@@ -125,12 +140,8 @@ class Attendance(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Red"
-        return Builder.load_file('Attendance.kv')
-
-    def logger(self):
-        print(self.root.current.isidentifier())
-        self.root.current = "Course"
-        return 1
+        mapp = Builder.load_file('Attendance.kv')
+        return mapp
 
 
 Attendance().run()
