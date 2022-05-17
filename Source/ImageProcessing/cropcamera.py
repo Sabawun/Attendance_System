@@ -24,7 +24,7 @@ while(True):
         except:
             #If the boundaries we try to reach are out of reach, we simple crop what we have there.
             crop_img = img[y: y+h, x: x+w]
-            cv2.imwrite(username + "/Type("+ str(count) + ").jpg", crop_img)
+            cv2.imwrite(userName + "/Type("+ str(count) + ").jpg", crop_img)
         cv2.imshow('image', crop_img)
     k = cv2.waitKey(100) & 0xff
     #After having 50 images or having pressed "Esc" button, we shut down the process.

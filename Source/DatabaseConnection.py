@@ -7,7 +7,7 @@ def check_username_password():
         connection = mysql.connector.connect(host='localhost',
                                              database='Attendance',
                                              user='root',
-                                             password='sabawun98')
+                                             password='Onur_281195')
         if connection.is_connected():
             #    db_Info = connection.get_server_info()
             cursor = connection.cursor()
@@ -25,3 +25,5 @@ def check_username_password():
 
     except Error as e:
         print("Error while connecting to MySQL", e)
+
+check_username_password()

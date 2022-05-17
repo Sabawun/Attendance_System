@@ -14,16 +14,19 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 from kivy.uix.camera import Camera
 from tensorflow import keras
-from Source.CNN.Sabawun_PCA_Attendance import pca
+from Source.CNN.PCA_Attendance import PCA_Attendance
+from pathlib import Path
 
 User = "Sabawun"
+pca, train_img_pca, test_img_pca = PCA_Attendance(User)
 
-CATEGORIES = ["Sabawun", "Other"]
 
-model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/CNN_Models/" + User)
+CATEGORIES = [User, "Other"]
+p = Path(__file__).parents[2]   # graduation project folder.
+p = "{0}\\CNN_Models\\{1}".format(str(p), User)
+model = keras.models.load_model(p)
 
-classifier = cv2.CascadeClassifier(
-    "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Source/ImageProcessing/haarcascade_frontalface_alt.xml")
+classifier = cv2.CascadeClassifier("../ImageProcessing/haarcascade_frontalface_alt.xml")
 
 Window.size = (320, 600)
 

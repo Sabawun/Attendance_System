@@ -3,28 +3,25 @@ import datetime
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-import cv2
+from cv2 import cv2
 import numpy as np
 from tensorflow import keras
+from Source.CNN.PCA_Attendance import PCA_Attendance
+#from Source.DatabaseConnection import check_username_password
+from pathlib import Path
 
-from Source.DatabaseConnection import check_username_password
 
-User = check_username_password()
+#User = check_username_password()
+User = "Onur"
+p = Path(__file__).parents[1]   # go one step back
+cnn_models_folder = str(p) + "\CNN_Models\\"
+haarcascade_path = "./ImageProcessing/haarcascade_frontalface_alt.xml"
+pca, train_img_pca, test_img_pca = PCA_Attendance(User)
 
-if User == "Abdullah":
-    from CNN.Abdullah_PCA_Attendance import pca
-elif User == "Sabawun":
-    from CNN.Sabawun_PCA_Attendance import pca
-elif User == "Alpsen":
-    from CNN.Alpsen_PCA_Attendance import pca
-elif User == "Onur":
-    from CNN.Onur_PCA_Attendance import pca
-else:
-    print("User not specified")
 
 CATEGORIES = [User, "Other"]
 # from CNN import model
-model = keras.models.load_model("/Users/sabawunafzalkhattak/Desktop/Attendance_System/CNN_Models/" + User)
+model = keras.models.load_model(cnn_models_folder + User)
 
 count = 0
 dic = dict()
@@ -50,7 +47,7 @@ def recognizer():
     cap = cv2.VideoCapture(0)
 
     # viola jones algorithm for feature extraction,finds the face object.
-    classifier = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
+    classifier = cv2.CascadeClassifier(haarcascade_path)
 
     # looping for constant video stream and detection & recognition.
     while True:
