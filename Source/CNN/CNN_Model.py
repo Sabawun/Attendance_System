@@ -46,6 +46,5 @@ def CNN_Model(User):
     history = model.fit(train_img_pca, y_train, batch_size=batch_size, epochs=epochs,
                         validation_data=(test_img_pca, y_test))
 
-    p = Path(__file__).parents[2]
-    p = '{0}\\CNN_Models\\{1}'.format(str(p), User)
-    model.save(p)
+    cnn_models_folder = "../../CNN_Models/" + User
+    model.save(cnn_models_folder)

@@ -13,8 +13,8 @@ from pathlib import Path
 
 #User = check_username_password()
 User = "Onur"
-p = Path(__file__).parents[1]   # go one step back
-cnn_models_folder = str(p) + "\CNN_Models\\"
+
+cnn_models_folder = "../../CNN_Models/" + User
 haarcascade_path = "./ImageProcessing/haarcascade_frontalface_alt.xml"
 pca, train_img_pca, test_img_pca = PCA_Attendance(User)
 

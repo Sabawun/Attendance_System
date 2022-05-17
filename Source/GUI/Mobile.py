@@ -17,13 +17,14 @@ from tensorflow import keras
 from Source.CNN.PCA_Attendance import PCA_Attendance
 from pathlib import Path
 from kivy.properties import ObjectProperty
+
 User = "Sabawun"
 pca, train_img_pca, test_img_pca = PCA_Attendance(User)
 
 
 CATEGORIES = [User, "Other"]
-p = Path(__file__).parents[2]   # graduation project folder.
-p = "{0}\\CNN_Models\\{1}".format(str(p), User)
+
+p = "../../CNN_Models/" + User
 model = keras.models.load_model(p)
 
 classifier = cv2.CascadeClassifier("../ImageProcessing/haarcascade_frontalface_alt.xml")
