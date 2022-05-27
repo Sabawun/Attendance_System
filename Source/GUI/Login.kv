@@ -1,0 +1,123 @@
+WindowManager:
+    Login:
+    Course:
+    VideoScreen:
+<Login>:
+    name : 'Login'
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:'../../Bg.jpg'
+    on_enter: root.pusher()
+
+    MDBoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: 5
+        MDBoxLayout:
+            orientation: "vertical"
+            Image:
+                id: Logo
+                source:'../../logo.png'
+                allow_stretch: True
+                keep_ratio: True
+                pos_hint: {"center_x":0.5,"center_y":0.2}
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: 20
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: 20
+            MDTextFieldRound:
+                id: studentId
+                hint_text: "Student Id"
+                normal_color: .80, .80, .80, 1
+                color_active: .6, 0, 0, 1
+                max_text_length: 7
+                icon_left: "account"
+                size_hint_x:  None
+                font_size: 18
+                height: "30dp"
+                width : 200
+                pos_hint: {"center_x": 0.5 }
+                password : False
+                elevation: 10
+            MDTextFieldRound:
+                id: password
+                hint_text: "password"
+                normal_color: .80, .80, .80, 1
+                color_active: .6, 0, 0, 1
+                icon_left: "eye-off"
+                size_hint_x:  None
+                font_size: 18
+                height: "30dp"
+                width : 200
+                pos_hint: {"center_x": 0.5 }
+                password : True
+                elevation: 10
+            MDFillRoundFlatButton:
+                text: "Login"
+                font_size: 12
+                md_bg_color : .8, 0, 0, 1
+                pos_hint: {"center_x":0.5}
+                elevation: 20
+                on_press: root.logger()
+            MDFillRoundFlatButton:
+                text: "Exit"
+                md_bg_color : .8, 0, 0, 1
+                font_size: 12
+                pos_hint: {"center_x":0.5}
+                elevation: 20
+                on_press: root.exiter()
+        MDBoxLayout:
+            orientation: 'vertical'
+
+<Course>:
+    name: 'Course'
+    on_leave: root.removeWid()
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:'../../Bg.jpg'
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        spacing: 10
+        pos: 10,500
+        MDFillRoundFlatButton:
+            text: "Back"
+            font_size: 12
+            md_bg_color : .8, 0, 0, 1
+            pos_hint: {"center_x":0.5}
+            elevation: 20
+            pos: 100,50
+            on_release: app.root.current = 'Login'
+
+        MDFillRoundFlatButton:
+            text: "Schedules"
+            font_size: 12
+            md_bg_color : .8, 0, 0, 1
+            pos_hint: {"center_x":0.5}
+            elevation: 20
+            on_release: root.dropDownMenu()
+
+<VideoScreen>:
+    name: 'VideoScreen'
+    orientation: 'vertical'
+    on_enter: root.cameraMethod()
+    on_leave: root.removeCamera()
+    MDBoxLayout:
+        orientation: 'vertical'
+        ToggleButton:
+            text: 'Play'
+            on_press: self.camera.play = not self.camera.play
+            size_hint_y: None
+            height: '48dp'
+        Button:
+            text: 'Back'
+            on_press: app.root.current = 'Course'
+            size_hint_y: None
+            height: '48dp'
