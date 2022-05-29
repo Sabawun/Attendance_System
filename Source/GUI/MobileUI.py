@@ -1,51 +1,52 @@
 import sys
-from datetime import time
-import cv2
-import kivy
+from cv2 import cv2
 import numpy as np
 from kivy.app import App
-from kivy.base import runTouchApp
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.uix import popup
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivymd.app import MDApp
 from kivy.uix.image import Image
-from kivy.graphics.texture import Texture
+from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.screenmanager import ScreenManager, FadeTransition
 from kivy.uix.screenmanager import Screen
-from kivy.uix.camera import Camera
-# from tensorflow import keras
-# from Source.CNN.PCA_Attendance import PCA_Attendance
-from pathlib import Path
-from kivy.properties import ObjectProperty
-from kivymd.uix.button import MDFillRoundFlatButton, MDRoundFlatButton, MDRaisedButton
+from kivy.graphics.texture import Texture
+from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.textfield import MDTextField
 from tensorflow import keras
 from Source.CNN.PCA_Attendance import PCA_Attendance
+from datetime import datetime
+from datetime import timedelta
+from datetime import date
+import calendar
 
 
 class WindowManager(ScreenManager):
     pass
 
 
-# kv file
 User = ""
+ID = ""
 sm = WindowManager()
-# adding screens
+surname = ""
+model = ""
+p = ""
+CATEGORIES = []
 
 Window.size = (320, 600)
 
 
 class PopupWindow(Widget):
     def btn(self):
-        popFun()
+        popFun("button")
 
 
 class P(FloatLayout):
@@ -53,30 +54,31 @@ class P(FloatLayout):
 
 
 # function that displays the content
-def popFun():
+def passwordPop():
     show = P()
-    window = Popup(title="ID not recognized.\nPlease try again.", content=show,
-                   size_hint=(None, None), size=(320, 100))
+    password = ObjectProperty(None)
+    box = BoxLayout(orientation='vertical', padding=10)
+    box.add_widget(Label(text="Please enter new password", font_size=16, color=(.8, .8, .8, 1)))
+    test = MDTextField(mode="rectangle", hint_text="password", error_color=(1, 1, 1, 0), icon_right="lock",
+                       current_hint_text_color=(0.6, 0.6, 0.8, 1))
+    box.add_widget(test)
+    btn1 = MDRaisedButton(text="Save")
+    box.add_widget(btn1)
+    window = Popup(title="New password", content=box,
+                   size_hint=(None, None), auto_dismiss=False, size=(320, 300))
+    btn1.bind(on_press=window.dismiss)
     window.open()
+    print(test.text)
 
 
-def popFun2():
+def popFun(message):
     show = P()
-    window = Popup(title="Login Success", content=show,
-                   size_hint=(None, None), size=(120, 100))
+    btn1 = MDRaisedButton(text="Close", md_bg_color=(.4, 0, .15, 1))
+    window = Popup(title=message, content=btn1,
+                   size_hint=(None, None), auto_dismiss=False, size=(320, 300))
+    btn1.bind(on_press=window.dismiss)
     window.open()
 
-def popFun3():
-    show = P()
-    window = Popup(title="User not recognized,Please try again.", content=show,
-                   size_hint=(None, None), size=(320, 100))
-    window.open()
-
-def popFun4():
-    show = P()
-    window = Popup(title="Attendance registered successfully.", content=show,
-                   size_hint=(None, None), size=(320, 100))
-    window.open()
 
 def popFun5(index):
     show = P()
@@ -84,43 +86,45 @@ def popFun5(index):
                    size_hint=(None, None), size=(320, 100))
     window.open()
 
+
 class Login(Screen):
     studentId = ObjectProperty(None)
     password = ObjectProperty(None)
-    def pusher(self):
-        my_box = MDBoxLayout(orientation="vertical")
-        my_box.wids = []
-        my_box.wids.append(my_box)
-        my_box.add_widget(my_box)
-        return self.add_widget(my_box)
+
     def logger(self):
 
         global User
         # User = check_username_password(self.ids.studentId.text, self.ids.password.text)
         user = "2243459"
         User = "Onur"
+        global surname
+        surname = "C. Güven"
+        global ID
+
+        ID = user
         if self.ids.studentId.text != user:
-            popFun()
+            popFun("ID not found.")
         else:
-            popFun2()
-            self.manager.current = "Course"
-            self.ids.studentId.text = " "
-            self.ids.password.text = ""
+            if self.ids.password.text == '1':
+                passwordPop()
+                self.manager.current = "Course"
+                self.ids.studentId.text = ""
+                self.ids.password.text = ""
+            else:
+                popFun("Welcome, %s" % user)
+                self.manager.current = "Course"
+                self.ids.studentId.text = ""
+                self.ids.password.text = ""
 
     def exiter(self):
         sys.exit()
 
 
 classifier = cv2.CascadeClassifier("../ImageProcessing/haarcascade_frontalface_alt.xml")
-User = "Onur"
-CATEGORIES = [User, "Other"]
-p = "../../CNN_Models/" + str(User)
-model = keras.models.load_model(p)
+
 course = ""
-pca, train_img_pca, test_img_pca = PCA_Attendance(User)
+pca, train_img_pca, test_img_pca = 0, 0, 0
 count = 0
-
-
 
 
 def attendancer(instance):
@@ -131,7 +135,6 @@ def attendancer(instance):
 
 
 def frame_to_texture(frame):
-    # convert it to texture
     buf1 = cv2.flip(frame, 0)
     buf = buf1.tobytes()
     image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
@@ -144,7 +147,6 @@ def detect_faces(frame):
     Image_test = []
     global count
     count = 0
-    # Draw a rectangle around the faces
     for face in faces:
         x, y, w, h = face
         im_face = frame[y:y + h, x:x + w]  # frame with only detected face
@@ -185,7 +187,6 @@ def detect_faces(frame):
             if classes_x == CATEGORIES[0]:
                 count += 1
             else:
-                print("Not Equ")
                 print(type(classes_x), type(CATEGORIES))
                 count = 0
 
@@ -214,14 +215,14 @@ class KivyCamera(Image):
             self.totalcount = self.totalcount + self.count
             print(self.totalcount)
             if self.totalframes > 100:
-                if self.totalcount > 20:    # success, take attendance
-                    popFun4()
+                if self.totalcount > 10:  # success, take attendance
+                    popFun("Attendance successful.")
                     App.get_running_app().root.transition = FadeTransition(duration=.3)
                     App.get_running_app().root.current = "Course"
                     self.detect = 0
                     self.capture.release()
                 else:
-                    popFun3()
+                    popFun("Attendance failed.")
                     App.get_running_app().root.transition = FadeTransition(duration=.3)
                     App.get_running_app().root.current = "Course"
                     self.capture.release()
@@ -239,6 +240,11 @@ class VideoScreen(Screen):
     kivyc = None
 
     def cameraMethod(self):
+        global CATEGORIES, p, model, pca, train_img_pca, test_img_pca
+        CATEGORIES = [User, "Other"]
+        p = "../../CNN_Models/" + str(User)
+        model = keras.models.load_model(p)
+        pca, train_img_pca, test_img_pca = PCA_Attendance(User)
         my_box = MDBoxLayout(orientation="vertical")
         my_box.wids = []
         self.kivyc = KivyCamera()
@@ -253,63 +259,176 @@ class VideoScreen(Screen):
 
 
 class Course(Screen):
+    def build(self):
+        widget = FloatLayout(size=(300, 300))
+        nameLabel = Label(text=("[b]%s %s, %s[/b]" % (User, surname, ID)), marker=True, font_size=11,
+                          color=(0, 0, 0, 1),
+                          pos=(-60, 280))
+        widget.add_widget(nameLabel)
+        return self.add_widget(nameLabel)
+
     nam = ""
+
     box_situation = 0
+    my_label = 0
+    now = datetime.now()
+    course_situation = 0
+    clock_situation = 0
+
     def returntoLogin(self):
+        self.box_situation = 0
+        self.course_situation = 0
+        self.removeWid()
         self.manager.current = "Login"
 
     def dropDownMenu(self):
-        red = [.75, 0, 0, 1]
-        green = [0, .75, 0, 1]
-        blue = [0, .4, .4, 1]
-        purple = [1, 0, 1, 1]
-        LectureList = ["CNG445", "CNG492", "CNG482", "CNG457"]
-        LectureSchedules = ["Monday 8:40-10:30" + " Wednesday 13:40-14:30", "Wednesday 14:40-16:30",
-                            "Friday 10:40-13:30", "Tuesday 11:40-12:30" + " Thursday 10:40-12:30"]
-        my_box = MDBoxLayout(orientation="vertical")
-        my_box2 = MDBoxLayout(orientation="vertical")
-        my_box3 = MDBoxLayout(orientation="vertical")
-        my_box4 = MDBoxLayout(orientation="vertical")
-        my_box.my_buttons = []
-        labelCurrentTime = Label(text="Current Date & Time : 15:37 Wednesday",halign="center", valign="middle",
-                                 color=(0, 0, 0, 1))
-        my_box.my_buttons.append(my_box2)
-        my_box.add_widget(my_box2)
-        my_box.my_buttons.append(my_box4)
-        my_box.add_widget(my_box4)
-        my_box.my_buttons.append(labelCurrentTime)
-        my_box.add_widget(labelCurrentTime)
-        x=0
-        for i in range(len(LectureList)):
-            labelLecTime = Label(text=LectureList[i] + "\n" + LectureSchedules[i], halign="center", valign="middle",
+
+        if self.box_situation == 1:
+            pass
+        else:
+            self.course_situation = 1
+            LabelX, LabelY = -62, 230
+            positionY = 511
+            if self.clock_situation == 0:
+                Clock.schedule_interval(self.update_clock, 1)
+                self.clock_situation = 1
+            curr_date = date.today()
+            self.my_label = Label(text="                          %s %s" % (self.now.strftime('%H:%M:%S'),
+                                                                            calendar.day_name[curr_date.weekday()]),
+                                  pos=(LabelX, 260),
+                                  font_size=15, color=(0, 0, 0, 1))
+            # The label is the only widget in the interface
+            LectureList = ["CNG445", "CNG492", "CNG482", "CNG457"]
+            LectureSchedules = ["Monday,8:40,10:30,Wednesday,13:40,14:30", "Wednesday,14:40,16:30",
+                                "Friday,10:40,13:30", "Tuesday,11:40,12:30,Sunday,16:44,23:30"]  # get this with query.
+
+            Today = calendar.day_name[curr_date.weekday()]
+            now = datetime.now()
+
+            todayHour = datetime.strptime(now.strftime('%H:%M'), "%H:%M")
+
+            my_box = FloatLayout(size=(320, 600))
+            my_box.my_buttons = []
+            labelDivider = Label(text="-----------------------------------------------------------------------------"
+                                      "----------------------------------------------------------------------------",
+                                 pos=(LabelX, LabelY + 20),
                                  font_size=11, color=(0, 0, 0, 1))
-            if x<3:
-                button = MDFillRoundFlatButton(text="Attend", font_size=11, elevation=20,pos=(100,100),
-                                               pos_hint={"center_x": 0.5, "center_y": 0.4}, md_bg_color=red)
-                button.bind(on_press=popFun5)
-                my_box.my_buttons.append(labelLecTime)
-                my_box.my_buttons.append(button)
-                my_box.add_widget(labelLecTime)
-                my_box.add_widget(button)
-                x +=1
-            else:
-                button = MDFillRoundFlatButton(text="Attend", font_size=12, elevation=20,
-                                               pos_hint={"center_x": 0.5, "center_y": 0.4}, md_bg_color=green)
-                button.bind(on_press=attendancer)
-                my_box.my_buttons.append(labelLecTime)
-                my_box.my_buttons.append(button)
-                my_box.add_widget(labelLecTime)
-                my_box.add_widget(button)
-                x+=1
-        self.box_situation = 1
-        my_box.my_buttons.append(my_box3)
-        my_box.add_widget(my_box3)
-        return self.add_widget(my_box)
+            my_box.my_buttons.append(labelDivider)
+            my_box.add_widget(labelDivider)
+            my_box.my_buttons.append(self.my_label)
+            my_box.add_widget(self.my_label)
+            for i in range(len(LectureSchedules)):
+
+                Day, start, end, *args = LectureSchedules[i].split(',')
+                startHour = datetime.strptime(start, "%H:%M")
+                endHour = datetime.strptime(end, "%H:%M")
+                labelDivider = Label(
+                    text="-----------------------------------------------------------------------------"
+                         "----------------------------------------------------------------------------",
+                    pos=(LabelX, LabelY - 20),
+                    font_size=11, color=(0, 0, 0, 1))
+                my_box.my_buttons.append(labelDivider)
+                my_box.add_widget(labelDivider)
+                labelLecTime = Label(text="%s --> %s %s %s"
+                                          % (LectureList[i], Day, start, end), pos=(LabelX, LabelY),
+                                     font_size=12, color=(0, 0, 0, 1))
+
+                LabelY -= 40
+                if Today == Day:  # check hours if day is same
+                    if startHour < todayHour < endHour:
+                        button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                                pos=(210, positionY), md_bg_color=(0, .5, 0, 1))
+                        positionY -= 40
+                        button.bind(on_press=attendancer)
+                        my_box.my_buttons.append(labelLecTime)
+                        my_box.my_buttons.append(button)
+                        my_box.add_widget(labelLecTime)
+                        my_box.add_widget(labelDivider)
+                        my_box.add_widget(button)
+                    else:
+                        button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                                pos=(210, positionY), md_bg_color=(.6, 0, 0, 1))
+                        positionY -= 40
+                        button.bind(on_press=popFun5)
+                        my_box.my_buttons.append(labelLecTime)
+                        my_box.my_buttons.append(button)
+                        my_box.add_widget(labelLecTime)
+                        my_box.add_widget(button)
+                else:
+                    button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                            pos=(210, positionY), md_bg_color=(.6, .0, .0, 1))
+                    positionY -= 40
+                    button.bind(on_press=popFun5)
+                    my_box.my_buttons.append(labelLecTime)
+                    my_box.my_buttons.append(button)
+                    my_box.add_widget(labelLecTime)
+                    my_box.add_widget(button)
+                argsS = ""
+                if args:  # check the next schedule of the current lecture
+                    labelDivider = Label(
+                        text="-----------------------------------------------------------------------------"
+                             "----------------------------------------------------------------------------",
+                        pos=(LabelX, LabelY - 20),
+                        font_size=11, color=(0, 0, 0, 1))
+                    my_box.my_buttons.append(labelDivider)
+                    my_box.add_widget(labelDivider)
+                    for y in range(len(args)):  # convert string to format then split
+                        argsS = argsS + args[y] + ","
+                    Day, start, end, *args = argsS.split(',')
+                    labelLecTime2 = Label(text="%s --> %s %s %s" % (LectureList[i], Day, start, end),
+                                          pos=(LabelX, LabelY),
+                                          font_size=11, color=(0, 0, 0, 1))
+                    LabelY -= 40
+                    startHour = datetime.strptime(start, "%H:%M")
+                    endHour = datetime.strptime(end, "%H:%M")
+                    if Today == Day:  # check hours if day is same
+                        if startHour < todayHour < endHour:
+                            button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                                    pos=(210, positionY), md_bg_color=(.0, .5, .0, 1))
+                            positionY -= 40
+                            button.bind(on_press=attendancer)
+                            my_box.my_buttons.append(labelLecTime2)
+                            my_box.my_buttons.append(button)
+                            my_box.add_widget(labelLecTime2)
+                            my_box.add_widget(button)
+                        else:
+                            button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                                    pos=(210, positionY), md_bg_color=(.6, .0, .0, 1))
+                            positionY -= 40
+                            button.bind(on_press=popFun5)
+                            my_box.my_buttons.append(labelLecTime2)
+                            my_box.my_buttons.append(button)
+                            my_box.add_widget(labelLecTime2)
+                            my_box.add_widget(button)
+                    else:
+                        button = MDRaisedButton(text="Attend", font_size=12, elevation=20,
+                                                pos=(210, positionY), md_bg_color=(.6, .0, .0, 1))
+                        positionY -= 40
+                        button.bind(on_press=popFun5)
+                        my_box.my_buttons.append(labelLecTime2)
+                        my_box.my_buttons.append(button)
+                        my_box.add_widget(labelLecTime2)
+                        my_box.add_widget(button)
+            self.box_situation = 1
+            return self.add_widget(my_box)
 
     def removeWid(self):
         if self.box_situation == 1:
             self.box_situation = 0
             self.clear_widgets(self.children[:1])
+
+    def update_clock(self, *args):
+
+        curr_date = date.today()
+        self.now = self.now + timedelta(seconds=1)
+        self.my_label.text = "                          %s, %s" % (self.now.strftime('%H:%M:%S'),
+                                                                   calendar.day_name[curr_date.weekday()])
+
+    def refresh(self):
+        print(self.course_situation)
+        if self.course_situation == 1:
+            self.removeWid()
+            self.dropDownMenu()
 
 
 sm.add_widget(Login(name="Login"))
@@ -317,7 +436,6 @@ sm.add_widget(Course(name="Course"))
 sm.add_widget(VideoScreen(name="VideoScreen"))
 
 
-# class that builds gui
 class loginMain(MDApp):
     def build(self):
         kv = Builder.load_file('Login.kv')
