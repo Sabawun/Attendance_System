@@ -4,13 +4,15 @@ import os
 import cv2
 from tqdm import tqdm
 from pathlib import Path
-User = "Sabawun"
+filename = "Batuhan"
+os.mkdir("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/"+filename)
 
-Test = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/" + User + "/Test"
-Train = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/" + User + "/Train"
+Test = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/Batuhan/Test"
+Train = "/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/Batuhan/Train"
 
-
-CATEGORIES = [User, "Other"]
+User = "Batuhan"
+#CATEGORIES = ["Ali","Elguzoli", "Nazaal","Sabawun"]
+CATEGORIES = [User,"Other"]
 
 
 #######################################################################################################################
@@ -33,6 +35,7 @@ training_data = []
 create_training_data()
 
 random.shuffle(training_data)
+
 Training_Images = []
 Training_Labels = []
 
@@ -40,7 +43,7 @@ for features, label in training_data:
     Training_Images.append(features)
     Training_Labels.append(label)
 
-Training_Images = np.array(Training_Images).reshape(-1, 64, 64, 3)
+Training_Images = np.array(Training_Images).reshape(-1, 64, 3)
 
 Norm_Training_Images = Training_Images / 255.0
 Norm_Training_Images = np.array(Norm_Training_Images)
@@ -78,7 +81,7 @@ for feature, labels in testing_data:
     Testing_Images.append(feature)
     Testing_Labels.append(labels)
 
-Testing_Images = np.array(Testing_Images).reshape(-1, 64, 64, 3)
+Testing_Images = np.array(Testing_Images).reshape(-1, 64, 3)
 
 Norm_Testing_Images = Testing_Images / 255.0
 Norm_Testing_Images = np.array(Norm_Testing_Images)
@@ -86,13 +89,13 @@ Testing_Labels = np.array(Testing_Labels)
 
 Flatten_Norm_Testing_Images = Norm_Testing_Images.reshape(-1, 12288)
 
+
+print(Training_Labels.size)
 ########################################################################################################################
 
-np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User +
-        "/" + User + "_Test_File.npy", Flatten_Norm_Testing_Images)
-np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User +
-        "/" + User + "_Train_File.npy", Flatten_Norm_Training_Images)
-np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Train_Labels"
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/Batuhan/Batuhan_Test_File.npy", Flatten_Norm_Testing_Images)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/Batuhan/Batuhan_Train_File.npy", Flatten_Norm_Training_Images)
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/Batuhan/Batuhan_Train_Labels"
         ".npy", Training_Labels)
-np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Test_Labels.npy",
+np.save("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/Batuhan/Batuhan_Test_Labels.npy",
         Testing_Labels)

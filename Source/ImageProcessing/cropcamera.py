@@ -7,6 +7,9 @@ cam.set(4, 1080) # 480
 face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 print("\n Initializing...")
 userName = input("What is the user's name?\n")
+import os
+
+os.mkdir("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/"+userName)
 count = 0
 while(True):
     #We receive video stream from the camera here.
@@ -20,7 +23,7 @@ while(True):
         try:
             #After detecting any face, we try to crop the whole face with all the features in the scene.
             crop_img = img[y: y+int(h*1.2), x: x+w]
-            cv2.imwrite(userName + "/Type("+ str(count) + ").jpg", crop_img)
+            cv2.imwrite("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Dataset/" + userName + "/" + str(count) + ".jpg", crop_img)
         except:
             #If the boundaries we try to reach are out of reach, we simple crop what we have there.
             crop_img = img[y: y+h, x: x+w]
@@ -30,7 +33,7 @@ while(True):
     #After having 50 images or having pressed "Esc" button, we shut down the process.
     if k == 27:
         break
-    elif count >= 50:
+    elif count >= 200:
          break
 print("\n Exiting Program")
 cam.release()
