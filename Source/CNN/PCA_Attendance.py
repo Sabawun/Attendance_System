@@ -3,14 +3,14 @@ from sklearn.decomposition import PCA
 import pandas as pd
 from pathlib import Path
 
-
 def PCA_Attendance(User):
-    p = Path(__file__).parents[2]
-    p = "{0}\\Files\\{1}".format(str(p), User)
-    Flatten_Norm_Testing_Images = np.load(p + "/" + User + "_Test_File.npy")
-    Flatten_Norm_Training_Images = np.load(p + "/" + User + "_Train_File.npy")
-    Training_Labels = np.load(p + "/" + User + "_Train_Labels.npy")
-    Testing_Labels = np.load(p + "/" + User + "_Test_Labels.npy")
+    Flatten_Norm_Testing_Images = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Test_File"".npy")
+    Flatten_Norm_Training_Images = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Train_File"
+                                                                                            ".npy")
+    Training_Labels = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Train_Labels"
+                                                                                            ".npy")
+    Testing_Labels = np.load("/Users/sabawunafzalkhattak/Desktop/Attendance_System/Files/" + User + "/" + User + "_Test_Labels"
+                                                                                            ".npy")
 
     feat_cols = ['pixel' + str(i) for i in range(Flatten_Norm_Training_Images.shape[1])]
     df_attendance = pd.DataFrame(Flatten_Norm_Training_Images, columns=feat_cols)
