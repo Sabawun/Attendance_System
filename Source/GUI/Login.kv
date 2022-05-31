@@ -8,7 +8,7 @@ WindowManager:
         Rectangle:
             pos: self.pos
             size: self.size
-            source:'../../Bg.jpg'
+            source:'Bg.jpg'
     FloatLayout:
         size:(320,600)
         MDTextField:
@@ -25,8 +25,8 @@ WindowManager:
             helper_text: "Enter 7-long ID"
             max_text_length: 7
             size_hint: .8, .08
-            pos: 30,250
-            font_size: 16
+            pos: dp(30),dp(250)
+            font_size: dp(16)
             password : False
             elevation: 10
         MDTextField:
@@ -35,27 +35,27 @@ WindowManager:
             icon_right :"lock"
             current_hint_text_color: 0.2,0.2,0.3,1
             hint_text: "password"
-            font_size: 16
+            font_size: dp(16)
             size_hint: .8, .08
-            pos: 30,200
+            pos: dp(30),dp(200)
             password : True
         MDRaisedButton:
             text: "Login"
             size_hint: .4, .05
-            pos: 20,130
-            font_size: 12
+            pos: dp(20),dp(130)
+            font_size: dp(12)
             md_bg_color: .6, 0, .15, 1
             on_press: root.logger()
         MDRaisedButton:
             text: "Exit"
             size_hint: .4, .05
-            pos: 160,130
-            font_size: 12
+            pos: dp(160),dp(130)
+            font_size: dp(12)
             md_bg_color: .6, 0, .15, 1
             on_press: root.exiter()
         Image:
             id: Logo
-            source:'../../logoRT.png'
+            source:'logoRT.png'
             allow_stretch: False
             keep_ratio: True
             pos_hint: {"center_x":0.5,"center_y":0.73}
@@ -63,12 +63,13 @@ WindowManager:
 
 <Course>:
     name: 'Course'
+    on_enter: root.dropDownMenu()
     on_leave: root.removeWid()
     canvas.before:
         Rectangle:
             pos: self.pos
             size: self.size
-            source:'../../Bg.jpg'
+            source:'Bg.jpg'
     MDBoxLayout:
         adaptive_height: True
         orientation: "vertical"
@@ -76,31 +77,19 @@ WindowManager:
         pos_hint: {'left': 1}
         MDRaisedButton:
             text: "Back"
-            font_size: 12
+            font_size: dp(12)
             md_bg_color : 0, .35, .35, 1
             pos_hint: {'right': 1}
             elevation: 10
             on_release: root.returntoLogin()
         MDRaisedButton:
             text: "Refresh"
-            font_size: 12
+            font_size: dp(12)
             md_bg_color : 0, .35, .35, 1
             pos_hint: {'right': 1}
             elevation: 10
             on_release: root.refresh()
-    MDBoxLayout:
-        adaptive_height: True
-        orientation: "vertical"
-        spacing: 12
-        pos_hint: {'right': 1}
-        MDRaisedButton:
-            text: "Schedules"
-            font_size: 12
-            md_bg_color : 0, .35, .35, 1
-            pos_hint: {"top": 1,"left": 1}
-            elevation: 10
-            pos_hint: {'left': 1}
-            on_release: root.dropDownMenu()
+
 
 <VideoScreen>:
     name: 'VideoScreen'
@@ -110,6 +99,7 @@ WindowManager:
     MDBoxLayout:
         orientation: 'vertical'
         Button:
+            font_size: dp(12)
             text: 'Back'
             on_press: app.root.current = 'Course'
             size_hint_y: None
